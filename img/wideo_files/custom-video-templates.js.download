@@ -1,0 +1,42 @@
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+jQuery(document).ready(function () {
+
+    //pause videos when user leaves tab
+    window.onblur = function () {
+        var x = document.getElementsByTagName("video");
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].pause();
+        }
+    }
+
+   // var session = getCookie("sessionID");
+
+    //check session
+    //if (session != null && session != undefined) {
+
+      //  jQuery.get("https://papi.wideo.co/2/users/me?accessToken=" + session, function (data) {
+            //load data
+            //change title for test
+	//		jQuery(".header_logged_in_avatar_name").text(data.user.name);
+//			jQuery(".header_logged_in_avatar").find("img").attr("src",data.user.avatarPath);
+  //      });
+
+    //}
+
+});

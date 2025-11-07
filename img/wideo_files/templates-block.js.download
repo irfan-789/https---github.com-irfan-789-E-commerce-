@@ -1,0 +1,50 @@
+jQuery(document).ready(function () {
+    if (jQuery(".trigger_sb_divi_modal.template-pop").length) {
+        jQuery(".trigger_sb_divi_modal.template-pop").each(function () {
+         	let targetpop = jQuery(this).attr('data-href');
+            let sourceObject = jQuery(targetpop).find('video source');
+            let videoObject = jQuery(targetpop).find('video');
+            let getSource = jQuery(sourceObject).attr('vd-src');
+            videoObject.css('visibility', 'hidden');
+			let popWidth = ( jQuery(window).width() < 768 )  ? '90%' : '60%';
+
+			// Create Popup
+            let thisPopup = jQuery(this).colorbox({
+                maxWidth: popWidth,
+                href: targetpop,
+                inline: true,
+                close: "X",
+                scrolling: false,
+                innerWidth: "80%",
+                //maxHeight: "100%",
+                onClosed: function () {
+                    videoObject[0].pause();
+                },
+                onComplete: function () {
+                    videoObject[0].play();
+                }
+            });
+
+			// Hide loading gif and display video when loaded
+            jQuery(videoObject).on('loadeddata', function () {
+                jQuery(targetpop).find('.loading').hide();
+                videoObject.css('visibility', 'visible');
+                thisPopup.colorbox.resize({width: popWidth, maxWidth: popWidth});
+                console.log('resize');
+            });
+			// iOS doesn't fire loadeddata without user interaction, so just display the video
+            if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+                jQuery(targetpop).find('.loading').hide();
+                videoObject.css('visibility', 'visible');
+            };
+			
+			// Resize Popup when screen resized or device rotated
+			jQuery(window).on('resize orientationchange', function () {
+				popWidth = ( jQuery(window).width() < 768 )  ? '90%' : '60%';
+				thisPopup.colorbox.resize({width: popWidth, maxWidth: popWidth});
+            });
+			
+			
+        });
+    };
+});
